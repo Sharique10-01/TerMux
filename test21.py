@@ -1,15 +1,17 @@
-🔥 Python is working in Termux!
--------------------------------
-Python Version     : 3.11.x
-Operating System   : Linux
-Release Version    : 4.x / 5.x Android kernel
-Machine            : aarch64
+import platform
+import time
 
-Running a quick loop test:
-Counting 1...
-Counting 2...
-Counting 3...
-Counting 4...
-Counting 5...
+print("🔥 Python is working in Termux!")
+print("-------------------------------")
 
-🎉 All tests completed!
+print(f"Python Version     : {platform.python_version()}")
+print(f"Operating System   : {platform.system()}")
+print(f"Release Version    : {platform.release()}")
+print(f"Machine            : {platform.machine()}")
+
+print("\nRunning a quick loop test:")
+for i in range(1, 6):
+    print(f"Counting {i}...")
+    time.sleep(0.5)
+
+print("\n🎉 All tests completed!")
