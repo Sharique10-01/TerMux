@@ -1,0 +1,21 @@
+{
+  "name": "termux-network-hub",
+  "version": "1.0.0",
+  "description": "Local network file sharing and chat server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": ["file-sharing", "chat", "local-network", "mobile-server"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.6.1",
+    "multer": "^1.4.5-lts.1",
+    "archiver": "^6.0.1",
+    "qrcode": "^1.5.3",
+    "mime-types": "^2.1.35"
+  }
+}

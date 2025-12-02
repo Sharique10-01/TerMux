@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Hub - File Share & Chat</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Welcome Modal -->
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-network-wired"></i>
+                <h2>Welcome to Network Hub</h2>
+            </div>
+            <div class="modal-body">
+                <p>Enter your name to join the network</p>
+                <input type="text" id="usernameInput" placeholder="Your name..." maxlength="20">
+                <button id="joinBtn" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Join Network
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="mainContainer" style="display: none;">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <i class="fas fa-network-wired"></i>
+                <h1>Network Hub</h1>
+            </div>
+            <div class="header-center">
+                <div class="stats">
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <span id="userCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-file"></i>
+                        <span id="fileCount">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn btn-secondary" id="qrCodeBtn">
+                    <i class="fas fa-qrcode"></i>
+                </button>
+                <button class="btn btn-secondary" id="infoBtn">
+                    <i class="fas fa-info-circle"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar - File Section -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3><i class="fas fa-folder-open"></i> Files</h3>
+                    <button class="btn btn-icon" id="refreshFilesBtn" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Drag & drop files here</p>
+                    <span>or</span>
+                    <input type="file" id="fileInput" multiple hidden>
+                    <button class="btn btn-primary" id="selectFilesBtn">
+                        <i class="fas fa-file-upload"></i> Select Files
+                    </button>
+                </div>
+
+                <!-- Upload Progress -->
+                <div id="uploadProgress" class="upload-progress" style="display: none;">
+                    <div class="progress-info">
+                        <span id="uploadFileName">Uploading...</span>
+                        <span id="uploadPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+
+                <!-- Files List -->
+                <div class="files-container">
+                    <div class="files-actions">
+                        <button class="btn btn-small" id="downloadAllBtn">
+                            <i class="fas fa-download"></i> Download All
+                        </button>
+                        <button class="btn btn-small btn-danger" id="clearAllBtn">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+                    <div id="filesList" class="files-list">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>No files yet</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Chat Section -->
+            <main class="chat-section">
+                <div class="chat-header">
+                    <h3><i class="fas fa-comments"></i> Chat</h3>
+                    <button class="btn btn-icon" id="clearChatBtn" title="Clear chat">
+                        <i class="fas fa-broom"></i>
+                    </button>
+                </div>
+
+                <!-- Online Users -->
+                <div class="online-users">
+                    <div class="users-list" id="onlineUsersList">
+                        <span class="user-badge">
+                            <i class="fas fa-circle"></i> You
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Messages Area -->
+                <div class="messages-container" id="messagesContainer">
+                    <div class="system-message">
+                        <i class="fas fa-info-circle"></i>
+                        Welcome to the chat! Start sharing messages with everyone on the network.
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div id="typingIndicator" class="typing-indicator" style="display: none;">
+                    <span id="typingUser">Someone</span> is typing
+                    <span class="typing-dots">
+                        <span>.</span><span>.</span><span>.</span>
+                    </span>
+                </div>
+
+                <!-- Message Input -->
+                <div class="message-input-container">
+                    <div class="message-input-wrapper">
+                        <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="Type your message..."
+                            maxlength="500"
+                        >
+                        <button class="btn btn-icon" id="sendBtn" title="Send message">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- QR Code Modal -->
+    <div id="qrModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Share Connection</h2>
+                <button class="btn btn-icon close-modal" data-modal="qrModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="qrCodeContainer"></div>
+                <div class="connection-url">
+                    <input type="text" id="connectionUrl" readonly>
+                    <button class="btn btn-primary" id="copyUrlBtn">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Server Information</h2>
+                <button class="btn btn-icon close-modal" data-modal="infoModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <i class="fas fa-server"></i>
+                        <div>
+                            <strong>Server Status</strong>
+                            <p>Online</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <strong>Connected Users</strong>
+                            <p id="infoUserCount">0</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-file"></i>
+                        <div>
+                            <strong>Total Files</strong>
+                            <p id="infoFileCount">0</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-network-wired"></i>
+                        <div>
+                            <strong>Network URL</strong>
+                            <p id="infoUrl">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h4><i class="fas fa-lightbulb"></i> Tips</h4>
+                    <ul>
+                        <li>All devices must be on the same WiFi network</li>
+                        <li>Files are stored temporarily on the server device</li>
+                        <li>Chat messages are cleared when server restarts</li>
+                        <li>Maximum file size: 500MB per file</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
